@@ -1,0 +1,57 @@
+version: '3'
+
+services: 
+
+  nats-server:
+    image: nats:latest
+    ports:
+      - 8222:8222
+
+  client-gateway:
+    build: ./client-gateway
+    ports: 
+      - ${PORT}:${PORT}
+    volumes:
+      - ./client-gateway/src:/usr/src/app/src 
+    command: npm run start:dev
+    environment:
+      - PORT=3000
+      - NATS_SERVERS=${NATS_SERVERS}
+
+  products-microservice:
+    build: ./products
+    volumes:
+      - ./products/src:/usr/src/app/src 
+    command: npm run start:dev
+    environment:
+      - PORT=3001
+      - NATS_SERVERS=${NATS_SERVERS}
+      - DATABASE_URL=${SLQ_LITE_DATABASE_URL}
+
+  orders-microservice:
+    build: ./orders
+    depends_on:
+      - orders-db
+    volumes:
+      - ./orders/src:/usr/src/app/src 
+    command: npm run start:dev
+    environment:
+      - PORT=3002
+      - NATS_SERVERS=${NATS_SERVERS}
+      - DATABASE_URL=${POSTGRESQL_DATABASE_URL}
+
+  orders-db:
+    container_name: orders_database
+    image: postgres:16.2
+    restart: always
+    volumes: 
+      - ./orders/postgres:/var/lib/postgresql/orders_data
+    ports: 
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=ordersdb 
+
+#NOTA: En el package.json de los microservicios orders y products, se creo el script "docker:start" 
+# y se agrego al "start:dev" para crear la base de datos con prisma
