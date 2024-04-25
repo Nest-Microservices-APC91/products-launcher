@@ -40,6 +40,21 @@ services:
       - NATS_SERVERS=${NATS_SERVERS}
       - DATABASE_URL=${POSTGRESQL_DATABASE_URL}
 
+  payments-microservice:
+    build: ./payments
+    volumes:
+      - ./payments/src:/usr/src/app/src 
+    command: npm run start:dev
+    ports:
+      - ${PAYMENTS_MS_PORT}:${PAYMENTS_MS_PORT}
+    environment:
+      - PORT=${PAYMENTS_MS_PORT}
+      - NATS_SERVERS=${NATS_SERVERS}
+      - STRIPE_SECRET=${STRIPE_SECRET}
+      - STRIPE_ENDPOINT_SECRET=${STRIPE_ENDPOINT_SECRET}
+      - SUCCESS_URL=${SUCCESS_URL}
+      - CANCEL_URL=${CANCEL_URL}
+
   orders-db:
     container_name: orders_database
     image: postgres:16.2
