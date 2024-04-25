@@ -68,5 +68,5 @@ services:
       - POSTGRES_PASSWORD=123456
       - POSTGRES_DB=ordersdb 
 
-#NOTA: En el package.json de los microservicios orders y products, se creo el script "docker:start" 
+# NOTA: En el package.json de los microservicios orders y products, se creo el script "docker:start" 
 # y se agrego al "start:dev" para crear la base de datos con prisma
