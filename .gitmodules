@@ -10,3 +10,6 @@
 [submodule "payments"]
 	path = payments
 	url = https://github.com/Nest-Microservices-APC91/Payment-microservices.git
+[submodule "auth"]
+	path = auth
+	url = https://github.com/Nest-Microservices-APC91/Auth-microservices.git
