@@ -18,6 +18,18 @@ services:
       - PORT=3000
       - NATS_SERVERS=${NATS_SERVERS}
 
+  auth-microservice:
+    build: ./auth
+    volumes:
+      - ./auth/src:/usr/src/app/src 
+    command: npm run start:dev
+    environment:
+      - PORT=3004
+      - NATS_SERVERS=${NATS_SERVERS}
+      - DATABASE_URL=${MONGO_DATABASE_URL}
+      - DB_NAME=${DB_NAME}
+      - JWT_SECRET=${JWT_SECRET}
+
   products-microservice:
     build: ./products
     volumes:
@@ -67,6 +79,18 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123456
       - POSTGRES_DB=ordersdb 
+
+  auth-db:
+    container_name: auth_database
+    image: mongo:5.0.16
+    restart: always
+    ports: 
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME:
+      MONGO_INITDB_ROOT_PASSWORD:
+    volumes:
+      - ./auth/mongo:/var/lib/mongo/auth_data
 
 # NOTA: En el package.json de los microservicios orders y products, se creo el script "docker:start" 
 # y se agrego al "start:dev" para crear la base de datos con prisma
