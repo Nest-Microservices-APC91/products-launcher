@@ -42,10 +42,10 @@ services:
 
   orders-microservice:
     build: ./orders
-    depends_on:
-      - orders-db
-    volumes:
-      - ./orders/src:/usr/src/app/src 
+#    depends_on:
+#      - orders-db
+#    volumes:
+#      - ./orders/src:/usr/src/app/src 
     command: npm run start:dev
     environment:
       - PORT=3002
@@ -71,18 +71,18 @@ services:
       - SUCCESS_URL=${SUCCESS_URL}
       - CANCEL_URL=${CANCEL_URL}
 
-  orders-db:
-    container_name: orders-db
-    image: postgres:16.2
-    restart: always
-    volumes: 
-      - ./orders/postgres:/var/lib/postgresql/orders_data
-    ports: 
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=123456
-      - POSTGRES_DB=ordersdb 
+#  orders-db:
+#    container_name: orders-db
+#    image: postgres:16.2
+#    restart: always
+#    volumes: 
+#      - ./orders/postgres:/var/lib/postgresql/orders_data
+#    ports: 
+#      - 5432:5432
+#    environment:
+#      - POSTGRES_USER=postgres
+#      - POSTGRES_PASSWORD=123456
+#      - POSTGRES_DB=ordersdb 
 
   auth-db:
     container_name: auth_database
