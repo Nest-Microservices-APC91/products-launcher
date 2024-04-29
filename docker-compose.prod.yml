@@ -1,0 +1,35 @@
+# Docker compose solo para contruir las imagenes
+# docker compose -f docker-compose.prod.yml build  
+version: '3'
+
+services: 
+
+  client-gateway:
+    image: apc91/client-gateway
+    build: 
+      context: ./client-gateway
+      dockerfile: dockerfile.prod
+
+  auth-microservice:
+    image: apc91/auth-microservice
+    build: 
+      context: ./auth
+      dockerfile: dockerfile.prod
+
+  products-microservice:
+    image: apc91/products-microservice
+    build: 
+      context: ./products
+      dockerfile: dockerfile.prod
+
+  orders-microservice:
+    image: apc91/orders-microservice
+    build: 
+      context: ./orders
+      dockerfile: dockerfile.prod
+
+  payments-microservice:
+    image: apc91/payments-microservice
+    build: 
+      context: ./payments
+      dockerfile: dockerfile.prod

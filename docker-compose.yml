@@ -50,7 +50,11 @@ services:
     environment:
       - PORT=3002
       - NATS_SERVERS=${NATS_SERVERS}
-      - DATABASE_URL=${POSTGRESQL_DATABASE_URL}
+      - DB_HOST=${ORDERS_DB_HOST}
+      - DB_PASSWORD=${ORDERS_DB_PASSWORD}
+      - DB_NAME=${ORDERS_DB_NAME}
+      - DB_PORT=${ORDERS_DB_PORT}
+      - DB_USERNAME=${ORDERS_DB_USERNAME}
 
   payments-microservice:
     build: ./payments
@@ -68,7 +72,7 @@ services:
       - CANCEL_URL=${CANCEL_URL}
 
   orders-db:
-    container_name: orders_database
+    container_name: orders-db
     image: postgres:16.2
     restart: always
     volumes: 
